@@ -1,68 +1,81 @@
 <!doctype html>
 <html>
 <head>
-  <!--  jQuery -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-  <!--  bootstrap -->
+  <!--  CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" integrity="sha256-HAaDW5o2+LelybUhfuk0Zh2Vdk8Y2W2UeKmbaXhalfA=" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <!-- Bootstrap Date-Picker Plugin -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-  <title>Data viewer</title>
+
+  <!--  javascript -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js" integrity="sha256-Y1rRlwTzT5K5hhCBfAFWABD4cU13QGuRN6P5apfWzVs=" crossorigin="anonymous"></script>
+<title>Data viewer</title>
 </head>
 <body>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-sm-6 col-xs-12">
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
 
-        <!-- Form code begins -->
-          <div class="input-daterange input-group" id="datepicker">
-            <input type="text" class="input-sm form-control" id="start" />
-            <span class="input-group-addon">to</span>
-            <input type="text" class="input-sm form-control" id="end" />
-          </div>
-          <button class="btn btn-primary " id="submit">Select</button>
-
-        <!-- Form code ends -->
-
+      <!-- Form code begins -->
+      <div class="input-daterange input-group" id="datepicker">
+        <input type="text" class="input-sm form-control" id="start" />
+        <span class="input-group-addon">to</span>
+        <input type="text" class="input-sm form-control" id="end" />
       </div>
+      <button class="btn btn-primary " id="submit">Select</button>
+
+      <!-- Form code ends -->
+
     </div>
   </div>
+</div>
 
+<div class="container">
+  <div class="row">
+    {% for index, image in images.iterrows() %}
 
-
-  <div class="container">
-    <div class="row">
-      {% for index, image in images.iterrows() %}
-
-      {% if loop.index0 % 4 == 0 and loop.index0 %}
-    </div><div class="row">
-      {% endif%}
-      <div class="col">
-        {{ image.year }} - {{ image.month }} - {{ image.day }}
+    {% if loop.index0 % 4 == 0 and loop.index0 %}
+  </div><div class="row">
+    {% endif%}
+    <div class="col">
+      {{ image.year }} - {{ image.month }} - {{ image.day }}
+      <a href="{{ url_for('custom_static', filename=image.path) }}" data-toggle="lightbox" data-gallery="example-gallery">
         <img class="img-thumbnail" src="{{ url_for('custom_static', filename=image.path) }}"/>
-      </div>
-      {% endfor %}
+      </a>
     </div>
+    {% endfor %}
   </div>
+</div>
 
-  <script>
-  $('#datepicker').datepicker({
-    format: "yyyy-mm-dd",
-    clearBtn: true,
-    keyboardNavigation: false,
-    forceParse: false,
-    autoclose: true,
-    todayHighlight: true
-  });
-  $( "#submit" ).click(function() {
+<script>
+$('#datepicker').datepicker({
+  format: "yyyy-mm-dd",
+  clearBtn: true,
+  keyboardNavigation: false,
+  forceParse: false,
+  autoclose: true,
+  todayHighlight: true
+});
+$( "#submit" ).click(function() {
   var start = $("#start").val();
   var end = $("#end").val();
   var address = '/dates/' + start + '/' + end;
   location.href = address;
 });
+
+$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
 </script>
 </body>
 </html>
