@@ -14,7 +14,7 @@
         {% endif%}
         <div class="col">
             {{ image.year }} - {{ image.month }} - {{ image.day }}
-            <img class="img-thumbnail" src="{{ url_for('custom_static', filename=image.image_name) }}"/>
+            <img class="img-thumbnail" src="{{ url_for('custom_static', filename=image.path) }}"/>
         </div>
       {% endfor %}
       </div>
