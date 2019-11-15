@@ -8,9 +8,7 @@ from models import image_reg, Image
 @app.route('/index')
 def index():
     path = app.config['IMAGES_FOLDER'];
-    image_names = [];
-    images = [];
-    rel_paths = []
+    image_reg = [];
     for root, dirs, files in os.walk(app.config['IMAGES_FOLDER']):
         for file in files:
             if file.endswith(".png"):
