@@ -12,26 +12,56 @@
   <title>Data viewer</title>
 </head>
 <body>
-<div class="container">
-  <div class="row">
-    {% for index, image in images.iterrows() %}
 
-    {% if loop.index0 % 4 == 0 and loop.index0 %}
-  </div><div class="row">
-    {% endif%}
-    <div class="col">
-      {{ image.year }} - {{ image.month }} - {{ image.day }}
-      <img class="img-thumbnail" src="{{ url_for('custom_static', filename=image.path) }}"/>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+
+        <!-- Form code begins -->
+          <div class="input-daterange input-group" id="datepicker">
+            <input type="text" class="input-sm form-control" id="start" />
+            <span class="input-group-addon">to</span>
+            <input type="text" class="input-sm form-control" id="end" />
+          </div>
+          <button class="btn btn-primary " id="submit">Select</button>
+
+        <!-- Form code ends -->
+
+      </div>
     </div>
-    {% endfor %}
   </div>
-</div>
 
-<script>
-$('#datepicker').datepicker({
-format: "yyyy/mm/dd",
-clearBtn: true,
-multidate: true
+
+
+  <div class="container">
+    <div class="row">
+      {% for index, image in images.iterrows() %}
+
+      {% if loop.index0 % 4 == 0 and loop.index0 %}
+    </div><div class="row">
+      {% endif%}
+      <div class="col">
+        {{ image.year }} - {{ image.month }} - {{ image.day }}
+        <img class="img-thumbnail" src="{{ url_for('custom_static', filename=image.path) }}"/>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+  $('#datepicker').datepicker({
+    format: "yyyy-mm-dd",
+    clearBtn: true,
+    keyboardNavigation: false,
+    forceParse: false,
+    autoclose: true,
+    todayHighlight: true
+  });
+  $( "#submit" ).click(function() {
+  var start = $("#start").val();
+  var end = $("#end").val();
+  var address = '/dates/' + start + '/' + end;
+  location.href = address;
 });
 </script>
 </body>
