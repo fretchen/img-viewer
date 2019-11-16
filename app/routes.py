@@ -24,3 +24,11 @@ def select_dates(start, end):
     mask = (image_reg['date'] >= start_date) & (image_reg['date'] <= end_date)
     image_reg = image_reg.loc[mask]
     return render_template('index.html', title='Home', user='Miguel', images = image_reg);
+
+
+@app.route('/today/')
+def today():
+    image_reg = Image.all(app.config['IMAGES_FOLDER']);
+    mask = image_reg['date'] == datetime.today();
+    image_reg = image_reg.loc[mask]
+    return render_template('index.html', title='Home', user='Miguel', images = image_reg);

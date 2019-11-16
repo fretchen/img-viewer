@@ -21,23 +21,20 @@
 </head>
 <body>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-12">
-
-      <!-- Form code begins -->
-      <div class="input-daterange input-group" id="datepicker">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="{{ url_for('index') }}">All</a>
+        <a class="nav-item nav-link" href="{{ url_for('today') }}">Today</a>
+      </div>
+      <div class="nav-item input-daterange input-group" id="datepicker">
         <input type="text" class="input-sm form-control" id="start" />
         <span class="input-group-addon">to</span>
         <input type="text" class="input-sm form-control" id="end" />
       </div>
       <button class="btn btn-primary " id="submit">Select</button>
-
-      <!-- Form code ends -->
-
     </div>
-  </div>
-</div>
+  </nav>
 
 <div class="container">
   <div class="row">
