@@ -28,9 +28,9 @@
         <a class="nav-item nav-link" href="{{ url_for('today') }}">Today</a>
       </div>
       <div class="nav-item input-daterange input-group" id="datepicker">
-        <input type="text" class="input-sm form-control" id="start" />
+        <input type="text" class="input-sm form-control" id="start" value="{{ start_date }}"/>
         <span class="input-group-addon">to</span>
-        <input type="text" class="input-sm form-control" id="end" />
+        <input type="text" class="input-sm form-control" id="end" value="{{ end_date }}"/>
       </div>
       <button class="btn btn-primary " id="submit">Select</button>
     </div>

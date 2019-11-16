@@ -9,7 +9,10 @@ from app.models import Image
 @app.route('/index')
 def index():
     image_reg = Image.all(app.config['IMAGES_FOLDER']);
-    return render_template('index.html', title='Home', user='Miguel', images = image_reg)
+    start_date = image_reg['date'].min().strftime('%Y-%m-%d');
+    end_date = image_reg['date'].max().strftime('%Y-%m-%d');
+    return render_template('index.html', start_date = start_date,
+        end_date = end_date, images = image_reg)
 
 @app.route('/cdn/<path:filename>')
 def custom_static(filename):
@@ -23,12 +26,17 @@ def select_dates(start, end):
     image_reg = Image.all(app.config['IMAGES_FOLDER']);
     mask = (image_reg['date'] >= start_date) & (image_reg['date'] <= end_date)
     image_reg = image_reg.loc[mask]
-    return render_template('index.html', title='Home', user='Miguel', images = image_reg);
+    return render_template('index.html', start_date = start_date,
+        end_date = end_date, images = image_reg)
 
 
 @app.route('/today/')
 def today():
     image_reg = Image.all(app.config['IMAGES_FOLDER']);
     mask = image_reg['date'] == datetime.today();
-    image_reg = image_reg.loc[mask]
-    return render_template('index.html', title='Home', user='Miguel', images = image_reg);
+    image_reg = image_reg.loc[mask];
+
+    start_date = datetime.today().strftime('%Y-%m-%d');
+    end_date = datetime.today().strftime('%Y-%m-%d');
+    return render_template('index.html', start_date = start_date,
+        end_date = end_date, images = image_reg)
