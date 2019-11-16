@@ -8,6 +8,8 @@ from app.models import Image
 @app.route('/')
 @app.route('/index')
 def index():
+    print(app.config['EXP_NAMES'])
+    print(app.config['IMAGE_FOLDERS'])
     image_reg = Image.all(app.config['IMAGES_FOLDER']);
     start_date = image_reg['date'].min().strftime('%Y-%m-%d');
     end_date = image_reg['date'].max().strftime('%Y-%m-%d');
