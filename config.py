@@ -1,20 +1,20 @@
 import os
-from dotenv import load_dotenv
 
 import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
-#print(config['IMAGE_FOLDERS'])
-for key in config['IMAGE_FOLDERS']:
-    print(key + '/' + config['IMAGE_FOLDERS'][key])
+
 basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
-    # ...
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'amTestKey'
-
     # config of the camera stuff
-    IMAGES_FOLDER = os.environ.get('IMAGES_FOLDER') or os.path.join(basedir, 'Images');
     EXP_NAMES = [key for key in config['IMAGE_FOLDERS']];
-    IMAGE_FOLDERS = [config['IMAGE_FOLDERS'][key] for key in config['IMAGE_FOLDERS']];
+    IMAGE_FOLDERS = [];
+    for key in config['IMAGE_FOLDERS']:
+        path = config['IMAGE_FOLDERS'][key];
+        print(path)
+        print(os.path.exists(path))
+        if os.path.exists(path):
+            IMAGE_FOLDERS.append(os.path.abspath(path))
+        elif os.path.exists(os.path.join(basedir, path)):
+            IMAGE_FOLDERS.append(os.path.join(basedir, config['IMAGE_FOLDERS'][key]));
