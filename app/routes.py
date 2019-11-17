@@ -40,9 +40,15 @@ def index_machine(name):
         end_date = end_date, images = image_reg,
         machines = machines, sel_machine = name);
 
-@app.route('/cdn/<path:filename>')
-def custom_static(filename):
-    folder = app.config['IMAGE_FOLDERS'][0];
+@app.route('/cdn/<name>/<path:filename>')
+def custom_static(name, filename):
+    machines = app.config['EXP_NAMES'];
+    if name in machines:
+        for ii, key in enumerate(machines):
+            if key == name:
+                folder = app.config['IMAGE_FOLDERS'][ii];
+    else:
+        return False
     return send_from_directory(folder,filename)
 
 @app.route('/machine/<name>/dates/<start>/<end>')

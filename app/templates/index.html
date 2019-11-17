@@ -65,8 +65,8 @@
       {% endif%}
       <div class="col">
         {{ image.year }} - {{ image.month }} - {{ image.day }}
-        <a href="{{ url_for('custom_static', filename=image.path) }}" data-toggle="lightbox" data-gallery="example-gallery">
-          <img class="img-thumbnail" src="{{ url_for('custom_static', filename=image.path) }}"/>
+        <a href="{{ url_for('custom_static', name = sel_machine, filename=image.path) }}" data-toggle="lightbox" data-gallery="example-gallery">
+          <img class="img-thumbnail" src="{{ url_for('custom_static', name = sel_machine, filename=image.path) }}"/>
         </a>
       </div>
       {% endfor %}
