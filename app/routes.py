@@ -74,7 +74,9 @@ def machine_select_dates(name, start, end):
 
 @app.route('/today/<name>')
 def today_machine(name):
-    machines = app.config['EXP_NAMES']
+    machines = app.config['EXP_NAMES'];
+    today = datetime.date(datetime.today());
+
 
     if name in machines:
             for ii, key in enumerate(machines):
@@ -84,7 +86,7 @@ def today_machine(name):
         return redirect(url_for('index'))
 
     image_reg = Image.all(folder);
-    mask = image_reg['date'] == datetime.today();
+    mask = image_reg['date'] == today;
     image_reg = image_reg.loc[mask];
 
     start_date = datetime.today().strftime('%Y-%m-%d');
