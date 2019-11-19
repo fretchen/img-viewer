@@ -7,6 +7,11 @@ config.read('config.ini')
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
+    # database
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
     # config of the camera stuff
     EXP_NAMES = [];
     IMAGE_FOLDERS = [];

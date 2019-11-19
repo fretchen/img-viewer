@@ -1,9 +1,9 @@
-from flask import render_template, send_from_directory, send_file, redirect
-from app import app
+from flask import render_template, send_from_directory, send_file, redirect, url_for
+from app import app, db
 from datetime import datetime
 import os
 
-from app.models import Image
+from app.models import Image, ImageDB
 
 @app.route('/')
 @app.route('/index')
@@ -77,7 +77,6 @@ def today_machine(name):
     machines = app.config['EXP_NAMES'];
     today = datetime.date(datetime.today());
 
-
     if name in machines:
             for ii, key in enumerate(machines):
                 if key == name:
@@ -94,3 +93,31 @@ def today_machine(name):
     return render_template('index.html', start_date = start_date,
         end_date = end_date, images = image_reg,
         machines = machines, sel_machine = name);
+
+@app.route('/refresh_db/')
+def add_images():
+    '''
+    we need to fill up the data base at some point.
+    '''
+    machines = app.config['EXP_NAMES'];
+    for ii, key in enumerate(machines):
+        img_folder = app.config['IMAGE_FOLDERS'][ii];
+        for root, dirs, files in os.walk(img_folder):
+            for file in files:
+                if file.endswith(".png"):
+                    rel_path = os.path.relpath(root, img_folder);
+                    full_path = os.path.join(rel_path, file);
+                    old_image = ImageDB.query.filter_by(path = full_path).first();
+                    if not old_image:
+                        split_path = rel_path.split(os.sep);
+                        image = ImageDB(path = full_path, machine = key,
+                            year = int(split_path[0]), month = int(split_path[1]),
+                            day = int(split_path[2]))
+                        db.session.add(image)
+                        print('Added ' + full_path)
+                    else:
+                        print('Ignored ' + full_path)
+
+        db.session.commit()
+        print('Done')
+        return redirect(url_for('index'))
