@@ -12,11 +12,9 @@ def index():
 
     folder = app.config['IMAGE_FOLDERS'][1];
     machine = app.config['EXP_NAMES'][1];
-
-    image_reg = Image.all(folder);
-
-    start_date = image_reg['date'].min().strftime('%Y-%m-%d');
-    end_date = image_reg['date'].max().strftime('%Y-%m-%d');
+    image_reg = ImageDB.query.order_by(ImageDB.date.desc()).all();
+    start_date = image_reg[0].date.strftime('%Y-%m-%d');
+    end_date = image_reg[-1].date.strftime('%Y-%m-%d');
     return render_template('index.html', start_date = start_date,
         end_date = end_date, images = image_reg,
         machines = machines, sel_machine = machine);
@@ -40,15 +38,13 @@ def index_machine(name):
         end_date = end_date, images = image_reg,
         machines = machines, sel_machine = name);
 
-@app.route('/cdn/<name>/<path:filename>')
-def custom_static(name, filename):
-    machines = app.config['EXP_NAMES'];
-    if name in machines:
-        for ii, key in enumerate(machines):
-            if key == name:
-                folder = app.config['IMAGE_FOLDERS'][ii];
-    else:
-        return False
+@app.route('/cdn/<int:id>')
+def custom_static(id):
+    image = ImageDB.query.get(id);
+    path = image.path;
+    filename = os.path.basename(path);
+    folder = os.path.dirname(path)
+    print(folder);
     return send_from_directory(folder,filename)
 
 @app.route('/machine/<name>/dates/<start>/<end>')
@@ -106,10 +102,11 @@ def add_images():
             for file in files:
                 if file.endswith(".png"):
                     rel_path = os.path.relpath(root, img_folder);
-                    full_path = os.path.join(rel_path, file);
+                    full_path = os.path.join(root, file);
                     old_image = ImageDB.query.filter_by(path = full_path).first();
                     if not old_image:
                         split_path = rel_path.split(os.sep);
+
                         image = ImageDB(path = full_path, machine = key,
                             year = int(split_path[0]), month = int(split_path[1]),
                             day = int(split_path[2]))
@@ -117,7 +114,7 @@ def add_images():
                         print('Added ' + full_path)
                     else:
                         print('Ignored ' + full_path)
-
+                        pass
         db.session.commit()
-        print('Done')
-        return redirect(url_for('index'))
+
+    return redirect(url_for('index'))

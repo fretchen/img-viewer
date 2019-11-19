@@ -1,8 +1,8 @@
 """image table
 
-Revision ID: 4bad4f18d212
+Revision ID: ebb4fe8b1f5f
 Revises: 
-Create Date: 2019-11-19 13:57:18.077111
+Create Date: 2019-11-19 14:22:42.515268
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4bad4f18d212'
+revision = 'ebb4fe8b1f5f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,7 @@ def upgrade():
     sa.Column('year', sa.Integer(), nullable=True),
     sa.Column('month', sa.Integer(), nullable=True),
     sa.Column('day', sa.Integer(), nullable=True),
+    sa.Column('date', sa.Date(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_imageDB_path'), 'imageDB', ['path'], unique=True)
