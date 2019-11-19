@@ -12,7 +12,7 @@ def index():
 
     folder = app.config['IMAGE_FOLDERS'][1];
     machine = app.config['EXP_NAMES'][1];
-    image_reg = ImageDB.query.order_by(ImageDB.date.desc()).all();
+    image_reg = ImageDB.query.order_by(ImageDB.date.desc()).paginate(1, 100, True).items;
     start_date = image_reg[0].date.strftime('%Y-%m-%d');
     end_date = image_reg[-1].date.strftime('%Y-%m-%d');
     return render_template('index.html', start_date = start_date,
