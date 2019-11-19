@@ -4,7 +4,7 @@ from app import app, db
 from datetime import datetime
 import os
 
-from app.models import Image, ImageDB
+from app.models import ImageDB
 
 @app.route('/')
 @app.route('/index')
