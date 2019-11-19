@@ -1,4 +1,5 @@
 from flask import render_template, send_from_directory, send_file, redirect, url_for
+from flask import request
 from app import app, db
 from datetime import datetime
 import os
@@ -11,23 +12,44 @@ def index():
     machines = app.config['EXP_NAMES'];
     machine = app.config['EXP_NAMES'][0];
 
-    image_reg = ImageDB.query.order_by(ImageDB.date.desc()).paginate(1, 100, True).items;
+    page = request.args.get('page', 1, type=int);
+
+    images = ImageDB.query.order_by(ImageDB.date.desc()).paginate(page, app.config['IMAGES_PER_PAGE'], True);
+
+    image_reg = images.items;
     start_date = image_reg[0].date.strftime('%Y-%m-%d');
     end_date = image_reg[-1].date.strftime('%Y-%m-%d');
+
+    next_url = url_for('index', page=images.next_num) \
+        if images.has_next else None
+    prev_url = url_for('index', page=images.prev_num) \
+            if images.has_prev else None
+
     return render_template('index.html', start_date = start_date,
         end_date = end_date, images = image_reg,
-        machines = machines, sel_machine = machine);
+        machines = machines, sel_machine = machine,
+        next_url=next_url, prev_url=prev_url);
 
 @app.route('/machine/<name>')
 def index_machine(name):
     machines = app.config['EXP_NAMES'];
-    image_reg = ImageDB.query.filter_by(machine=name).order_by(ImageDB.date.desc()).all();
+    page = request.args.get('page', 1, type=int);
+    images = ImageDB.query.filter_by(machine=name).order_by(ImageDB.date.desc()).\
+        paginate(page, app.config['IMAGES_PER_PAGE'], True);
+    image_reg = images.items;
+
+    next_url = url_for('index_machine', name=name, page=images.next_num) \
+        if images.has_next else None
+    prev_url = url_for('index_machine', name=name, page=images.prev_num) \
+        if images.has_prev else None
+
     start_date = image_reg[-1].date.strftime('%Y-%m-%d');
     end_date = image_reg[0].date.strftime('%Y-%m-%d');
 
     return render_template('index.html', start_date = start_date,
         end_date = end_date, images = image_reg,
-        machines = machines, sel_machine = name);
+        machines = machines, sel_machine = name,
+        next_url=next_url, prev_url=prev_url);
 
 @app.route('/today/<name>')
 def today_machine(name):
@@ -48,12 +70,19 @@ def machine_select_dates(name, start, end):
     start_date = datetime.date(datetime.strptime(start, '%Y-%m-%d'))
     end_date = datetime.date(datetime.strptime(end, '%Y-%m-%d'))
 
-    image_reg = ImageDB.query.filter(ImageDB.machine==name, ImageDB.date<=end_date,
-        ImageDB.date>=start_date).\
-        order_by(ImageDB.date.desc()).all();
+    images = ImageDB.query.filter(ImageDB.machine==name, ImageDB.date<=end_date,
+        ImageDB.date>=start_date).order_by(ImageDB.date.desc()).\
+        paginate(page, app.config['IMAGES_PER_PAGE'], True);
+    image_reg = images.items;
+
+    next_url = url_for('index_machine', name=name, page=images.next_num) \
+        if images.has_next else None
+    prev_url = url_for('index_machine', name=name, page=images.prev_num) \
+        if images.has_prev else None
     return render_template('index.html', start_date = start_date,
         end_date = end_date, images = image_reg,
-        machines = machines, sel_machine = name);
+        machines = machines, sel_machine = name,
+        next_url=next_url, prev_url=prev_url);
 
 @app.route('/cdn/<int:id>')
 def custom_static(id):

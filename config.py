@@ -12,6 +12,12 @@ class Config(object):
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    if 'IMAGES_PER_PAGE' in config['DEFAULT']:
+        IMAGES_PER_PAGE = int(config['DEFAULT']['IMAGES_PER_PAGE']);
+    else:
+            IMAGES_PER_PAGE = 25;
+    print(IMAGES_PER_PAGE)
+
     # config of the camera stuff
     EXP_NAMES = [];
     IMAGE_FOLDERS = [];
