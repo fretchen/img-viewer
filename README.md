@@ -47,3 +47,15 @@
 7.) Refresh the database through [localhost:8000/refresh_db](http://localhost:8000/refresh_db)
 
 You should see all the necessary images or open an issue here.
+
+## gunicorn
+We would like to get slightly safer than running the test server. So next step is
+gunicorn
+
+1.) Do a pip install of gunicorn
+
+> pip install gunicorn
+
+2.) Launch it
+
+gunicorn -w 4 -b 127.0.0.1:8000 app:app
