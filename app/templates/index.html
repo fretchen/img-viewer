@@ -10,7 +10,7 @@
     {% endif%}
     <div class="col">
       {{ image.year }} - {{ image.month }} - {{ image.day }}
-      <a href="{{ url_for('custom_static', id = image.id) }}" data-toggle="lightbox" data-gallery="example-gallery">
+      <a href="{{ url_for('custom_static', id = image.id) }}"  id="{{image.id}}" data-toggle="modal" data-target="#exampleModal" data-gallery="example-gallery">
         <img class="img-thumbnail" src="{{ url_for('custom_static', id = image.id) }}"/>
       </a>
     </div>
@@ -31,4 +31,28 @@
 {% else %}
 Please <a href="{{ url_for('login') }}"> login </a> to see the pics.
 {% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <img class="img-fluid" src="#" id="modal-img"/>
+      </div>
+      <!--
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Next</button>
+        <button type="button" class="btn btn-primary">Previous</button>
+      </div>
+    -->
+    </div>
+  </div>
+</div>
+<script>
+$(document).on('click', '[data-toggle="modal"]', function(event) {
+    var id = $(this).attr('id');
+    var address = '/cdn/'+ id;
+    $("#modal-img").attr("src",address);
+  });
+  </script>
 {% endblock %}
