@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 .flaskenv
 app.db
+config.ini
