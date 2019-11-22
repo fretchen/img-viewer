@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 
 from app.models import ImageDB
+from flask_login import login_required
 
 @app.route('/')
 @app.route('/index')
@@ -100,8 +101,8 @@ def custom_static(id):
     print(folder);
     return send_from_directory(folder,filename)
 
-
 @app.route('/refresh_db/')
+@login_required
 def add_images():
     '''
     we need to fill up the data base at some point.

@@ -7,6 +7,9 @@ config.read('config.ini')
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
+    # secret key
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'aTestKey'
+
     # database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')

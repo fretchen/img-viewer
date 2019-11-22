@@ -60,3 +60,8 @@ gunicorn
 2.) Launch it
 
 gunicorn -w 4 -b 127.0.0.1:8000 app:app
+
+
+## user creation
+
+we do not have a user interface for it as we do not want it. So you have to run it in the terminal
