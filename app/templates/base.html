@@ -36,6 +36,7 @@
       </div>
 
     <div class="form-inline ">
+    <div hidden id='machineSelected'>{{ sel_machine }}</div>
     <div class="form-inline " id="selectMachine">
       <label class="col-form-label" for="inputMachine">  Experiment:</label>
     <div class="col-auto">
@@ -70,7 +71,7 @@
   var machineSubmit = new Vue({
     el: '#selectMachine',
     data: {
-      selected: ''
+      selected: $("#machineSelected").text()
     },
     methods: {
     greet: function (event) {
