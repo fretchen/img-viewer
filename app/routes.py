@@ -4,9 +4,10 @@ from app import app, db
 from datetime import datetime
 import os
 
-from app.models import ImageDB, User
+from app.models import ImageDB, User, images_schema
 from app.forms import LoginForm
 from flask_login import login_required, current_user, logout_user, login_user
+import json
 
 @app.route('/')
 @app.route('/index')
@@ -27,8 +28,9 @@ def index():
     prev_url = url_for('index', page=images.prev_num) \
             if images.has_prev else None
 
+    im_json = json.dumps(images_schema.dump(image_reg));
     return render_template('index.html', start_date = start_date,
-        end_date = end_date, images = image_reg,
+        end_date = end_date, images = im_json,
         machines = machines, sel_machine = machine,
         next_url=next_url, prev_url=prev_url);
 
@@ -51,9 +53,9 @@ def index_machine(name):
     print(dates[-1][0])
     start_date = dates[-1][0].strftime('%Y-%m-%d');
     end_date = dates[0][0].strftime('%Y-%m-%d');
-
+    im_json = json.dumps(images_schema.dump(image_reg));
     return render_template('index.html', start_date = start_date,
-        end_date = end_date, images = image_reg,
+        end_date = end_date, images = im_json,
         machines = machines, sel_machine = name,
         next_url=next_url, prev_url=prev_url);
 
@@ -66,8 +68,9 @@ def today_machine(name):
 
     start_date = datetime.today().strftime('%Y-%m-%d');
     end_date = datetime.today().strftime('%Y-%m-%d');
+    im_json = json.dumps(images_schema.dump(image_reg));
     return render_template('index.html', start_date = start_date,
-        end_date = end_date, images = image_reg,
+        end_date = end_date, images = im_json,
         machines = machines, sel_machine = name);
 
 @app.route('/machine/<name>/dates/<start>/<end>')
@@ -88,8 +91,9 @@ def machine_select_dates(name, start, end):
     prev_url = url_for('machine_select_dates', name=name,
         start = start, end = end, page=images.prev_num) \
         if images.has_prev else None
+    im_json = json.dumps(images_schema.dump(image_reg));
     return render_template('index.html', start_date = start_date,
-        end_date = end_date, images = image_reg,
+        end_date = end_date, images = im_json,
         machines = machines, sel_machine = name,
         next_url=next_url, prev_url=prev_url);
 

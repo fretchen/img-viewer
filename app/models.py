@@ -1,6 +1,6 @@
 import os
 import datetime
-from app import db, login
+from app import db, login, ma
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -31,8 +31,14 @@ class ImageDB(db.Model):
          'month': self.month, 'year': self.year};
 
     def to_json(self):
-        #return json.dumps(self.to_dict());
-        return json.dumps(self.to_dict());
+        return image_schema.dumps(self);
+
+class ImageSchema(ma.ModelSchema):
+    class Meta:
+        model = ImageDB
+
+image_schema = ImageSchema()
+images_schema = ImageSchema(many=True)
 
 @login.user_loader
 def load_user(id):
