@@ -1,19 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 {% if current_user.is_authenticated %}
-<div class="container">
+<div class="container" id="imageTable">
   <div class="row">
     {% for image in images %}
 
     {% if loop.index0 % 4 == 0 and loop.index0 %}
   </div><div class="row">
     {% endif%}
-    <div class="col">
-      {{ image.year }} - {{ image.month }} - {{ image.day }}
-      <a href="{{ url_for('custom_static', id = image.id) }}"  id="{{image.id}}" data-toggle="modal" data-target="#exampleModal" data-gallery="example-gallery">
-        <img class="img-thumbnail" src="{{ url_for('custom_static', id = image.id) }}"/>
-      </a>
-    </div>
+      <image-widget v-bind:image="{{ image.to_json() }}" url="{{ url_for('custom_static', id = image.id) }}"></image-widget>
     {% endfor %}
   </div>
 </div>
@@ -39,20 +34,9 @@ Please <a href="{{ url_for('login') }}"> login </a> to see the pics.
       <div class="modal-body">
         <img class="img-fluid" src="#" id="modal-img"/>
       </div>
-      <!--
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Next</button>
-        <button type="button" class="btn btn-primary">Previous</button>
-      </div>
-    -->
     </div>
   </div>
 </div>
-<script>
-$(document).on('click', '[data-toggle="modal"]', function(event) {
-    var id = $(this).attr('id');
-    var address = '/cdn/'+ id;
-    $("#modal-img").attr("src",address);
-  });
-  </script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}

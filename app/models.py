@@ -4,6 +4,7 @@ from app import db, login
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import json
 
 class ImageDB(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +25,14 @@ class ImageDB(db.Model):
 
     def __repr__(self):
         return '<ImageDB {}>'.format(self.path);
+
+    def to_dict(self):
+        return {'id': self.id, 'path': self.path, 'day': self.day,
+         'month': self.month, 'year': self.year};
+
+    def to_json(self):
+        #return json.dumps(self.to_dict());
+        return json.dumps(self.to_dict());
 
 @login.user_loader
 def load_user(id):
