@@ -1,4 +1,4 @@
-# PI-viewer
+# Img-viewer
 
  Look into the shots we took with labscriptsuite. It is a great way to keep the
  larger public like the PI in the loop on what is going on in the lab. The software
@@ -46,22 +46,36 @@
 
 7.) Refresh the database through [localhost:8000/refresh_db](http://localhost:8000/refresh_db)
 
+8.) To see the images you have to log in, which means that you need to create a first user.
+
+> python create_user.py USERNAME PASSWORD
+
 You should see all the necessary images or open an issue here.
 
-## gunicorn
 
-We would like to get slightly safer than running the test server. So next step is
-gunicorn
 
-1.) Do a pip install of gunicorn
+# Deployment
 
-> pip install gunicorn
+while it is ok to use the img-viewer on a localhost it is actually really thought for servers. So here, we will discuss the necessay step to make it work.
 
-2.) Launch it
+## Set up
+
+We have to set up supervisorctl, nginx.
+For public usage you also would like to assign a permanent address and certificate.
+
+## Updates
+
+Given that we are running nginx continously we have to run in the simplest case:
+
+> pip install -r requirements.txt
+> sudo supervisorctl reload
+
+To stop nginx you have to run:
+
+> sudo service nginx stop
+
+## Debug
+
+Stop superviorctl and nginx:
 
 gunicorn -w 4 -b 127.0.0.1:8000 app:app
-
-
-## user creation
-
-we do not have a user interface for it as we do not want it. So you have to run it in the terminal
