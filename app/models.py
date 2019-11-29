@@ -1,9 +1,10 @@
 import os
 import datetime
-from app import db, login
+from app import db, login, ma
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import json
 
 class ImageDB(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +25,20 @@ class ImageDB(db.Model):
 
     def __repr__(self):
         return '<ImageDB {}>'.format(self.path);
+
+    def to_dict(self):
+        return {'id': self.id, 'path': self.path, 'day': self.day,
+         'month': self.month, 'year': self.year};
+
+    def to_json(self):
+        return image_schema.dumps(self);
+
+class ImageSchema(ma.ModelSchema):
+    class Meta:
+        model = ImageDB
+
+image_schema = ImageSchema()
+images_schema = ImageSchema(many=True)
 
 @login.user_loader
 def load_user(id):
