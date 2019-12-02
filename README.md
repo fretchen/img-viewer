@@ -8,7 +8,9 @@
  for dev purposes it is not super useful there as we typically have easily thousands and thousands of images to
  crawl through. So this project is typically really designed to run on a public server.
  This also comes with quite a bit of tools around the core functionality that we
- need to implement to secure it like servers, login, https etc.
+ need to implement to secure it like servers, login, https etc. Right now we are running it under:
+ 
+ https://imgviewer.synqs.de
 
  So for the moment I will give a dev install instruction. However, it is likely to become rather cumbersome at some point.
 
