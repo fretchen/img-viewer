@@ -8,11 +8,16 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     # secret key
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'aTestKey'
+    if 'SECRET_KEY' in config['DEFAULT']:
+        SECRET_KEY = config['DEFAULT']['SECRET_KEY'];
+        print(SECRET_KEY)
+    else:
+        SECRET_KEY = 'aTestKey';
 
     # database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     if 'IMAGES_PER_PAGE' in config['DEFAULT']:
