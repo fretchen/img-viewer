@@ -19,7 +19,6 @@ class Config(object):
         IMAGES_PER_PAGE = int(config['DEFAULT']['IMAGES_PER_PAGE']);
     else:
             IMAGES_PER_PAGE = 25;
-    print(IMAGES_PER_PAGE)
 
     # config of the camera stuff
     EXP_NAMES = [];
