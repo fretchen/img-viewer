@@ -10,7 +10,6 @@ class Config(object):
     # secret key
     if 'SECRET_KEY' in config['DEFAULT']:
         SECRET_KEY = config['DEFAULT']['SECRET_KEY'];
-        print(SECRET_KEY)
     else:
         SECRET_KEY = 'aTestKey';
 
