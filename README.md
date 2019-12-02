@@ -60,13 +60,34 @@ while it is ok to use the img-viewer on a localhost it is actually really though
 
 ## Set up
 
-We have to set up supervisorctl, nginx.
+Start a ubuntu machine, then we have to set up supervisorctl, nginx. We are massively following the tutorial by
+[Miguel Grinberg](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xvii-deployment-on-linux).
+
+### supervisorctl
+It allows us to automatically run on the system. We can give it the config file, which lives in
+_/etc/supervisor/conf.d/imgviewer.conf_:
+
+```
+[program:imgviewer]
+command=/home/ubuntu/venv/bin/gunicorn -b localhost:8000 -w 4 --log-level=warning app:app
+directory=/home/ubuntu/git/img-viewer
+user=ubuntu
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+```
+
+Then you can start it through
+> sudo supervisorctl start
+
 For public usage you also would like to assign a permanent address and certificate.
 
 ## Updates
 
 Given that we are running nginx continously we have to run in the simplest case:
 
+> git pull
 > pip install -r requirements.txt
 > sudo supervisorctl reload
 
