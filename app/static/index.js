@@ -26,9 +26,7 @@ Vue.component('image-table', {
   props: ['im_str'],
   template: `
   <div class="row">
-  <image-widget v-for="image in images" v-bind:image="image"/>
-  <ul>
-  </ul>
+    <image-widget v-for="image in images" v-bind:image="image"/>
   </div>
     `,
     data: function () {
