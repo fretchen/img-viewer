@@ -22,6 +22,5 @@ for ii, key in enumerate(machines):
                     db.session.add(image)
                     print('Added ' + full_path)
                 else:
-                    print('Ignored ' + full_path)
                     pass
     db.session.commit()

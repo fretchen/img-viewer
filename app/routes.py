@@ -17,7 +17,7 @@ def index():
 
     page = request.args.get('page', 1, type=int);
 
-    images = ImageDB.query.order_by(ImageDB.date.desc()).paginate(page, app.config['IMAGES_PER_PAGE'], True);
+    images = ImageDB.query.order_by(ImageDB.date_time.desc()).paginate(page, app.config['IMAGES_PER_PAGE'], True);
 
     image_reg = images.items;
     start_date = image_reg[0].date.strftime('%Y-%m-%d');
@@ -38,7 +38,7 @@ def index():
 def index_machine(name):
     machines = app.config['EXP_NAMES'];
     page = request.args.get('page', 1, type=int);
-    images = ImageDB.query.filter_by(machine=name).order_by(ImageDB.date.desc()).\
+    images = ImageDB.query.filter_by(machine=name).order_by(ImageDB.date_time.desc()).\
         paginate(page, app.config['IMAGES_PER_PAGE'], True);
     image_reg = images.items;
 
@@ -49,7 +49,7 @@ def index_machine(name):
 
 
     dates = ImageDB.query.filter_by(machine=name).\
-        order_by(ImageDB.date.desc()).with_entities(ImageDB.date).all();
+        order_by(ImageDB.date_time.desc()).with_entities(ImageDB.date).all();
     print(dates[-1][0])
     start_date = dates[-1][0].strftime('%Y-%m-%d');
     end_date = dates[0][0].strftime('%Y-%m-%d');
@@ -64,7 +64,7 @@ def today_machine(name):
     machines = app.config['EXP_NAMES'];
     today = datetime.date(datetime.today());
     image_reg = ImageDB.query.filter_by(machine=name, date = today).\
-        order_by(ImageDB.date.desc()).all();
+        order_by(ImageDB.date_time.desc()).all();
 
     start_date = datetime.today().strftime('%Y-%m-%d');
     end_date = datetime.today().strftime('%Y-%m-%d');
@@ -81,7 +81,7 @@ def machine_select_dates(name, start, end):
     end_date = datetime.date(datetime.strptime(end, '%Y-%m-%d'))
 
     images = ImageDB.query.filter(ImageDB.machine==name, ImageDB.date<=end_date,
-        ImageDB.date>=start_date).order_by(ImageDB.date.desc()).\
+        ImageDB.date>=start_date).order_by(ImageDB.date_time.desc()).\
         paginate(page, app.config['IMAGES_PER_PAGE'], True);
     image_reg = images.items;
 
