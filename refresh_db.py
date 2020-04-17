@@ -15,12 +15,14 @@ for ii, key in enumerate(machines):
                 old_image = ImageDB.query.filter_by(path = full_path).first();
                 if not old_image:
                     split_path = rel_path.split(os.sep);
-
-                    image = ImageDB(path = full_path, machine = key,
-                    year = int(split_path[0]), month = int(split_path[1]),
-                    day = int(split_path[2]))
-                    db.session.add(image)
-                    print('Added ' + full_path)
+                    try:
+                        image = ImageDB(path = full_path, machine = key,
+                        year = int(split_path[0]), month = int(split_path[1]),
+                        day = int(split_path[2]))
+                        db.session.add(image)
+                        print('Added ' + full_path)
+                    except ValueError as e:
+                        print(e);
                 else:
                     pass
     db.session.commit()
