@@ -42,7 +42,7 @@ $('#datepicker').datepicker({
 $( "#submit" ).click(function() {
   var start = $("#start").val();
   var end = $("#end").val();
-  var machine = $("#inputMachine").val();
+  var machine = $("#machineSelected").text();
   var address = '/machine/'+ machine +'/dates/' + start + '/' + end;
   location.href = address;
 });
